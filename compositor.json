@@ -1,0 +1,89 @@
+{
+  "name": "SleeplessByte/php-rescuetime",
+  "version": "0.1.4",
+  "libraries": {
+    "xv": "^1.1.25"
+  },
+  "title": "",
+  "branch": "master",
+  "style": {
+    "name": "Material",
+    "componentSet": {
+      "nav": "nav/DarkAbsoluteNav",
+      "header": "header/GradientHeader",
+      "article": "article/BasicArticle",
+      "footer": "footer/BasicFooter"
+    },
+    "fontFamily": "Roboto, sans-serif",
+    "heading": {
+      "fontWeight": 500,
+      "letterSpacing": "-0.01em"
+    },
+    "colors": {
+      "text": "#212121",
+      "background": "#fff",
+      "primary": "#2196f3",
+      "secondary": "#1565c0",
+      "highlight": "#ff4081",
+      "border": "#e0e0e0",
+      "muted": "#f5f5f5"
+    },
+    "layout": {
+      "centered": true,
+      "bannerHeight": "80vh",
+      "maxWidth": 896
+    }
+  },
+  "content": [
+    {
+      "component": "nav",
+      "links": [
+        {
+          "href": "http://rescuetime.derk-jan.org/",
+          "text": "Home"
+        },
+        {
+          "href": "https://github.com/SleeplessByte/php-rescuetime",
+          "text": "GitHub"
+        }
+      ]
+    },
+    {
+      "component": "header",
+      "heading": "php-rescuetime",
+      "subhead": "PHP + JS Api for Rescuetime",
+      "children": [
+        {
+          "component": "ui/TweetButton",
+          "text": "php-rescuetime: PHP + JS Api for Rescuetime",
+          "url": "http://rescuetime.derk-jan.org/"
+        },
+        {
+          "component": "ui/GithubButton",
+          "user": "SleeplessByte",
+          "repo": "php-rescuetime"
+        }
+      ]
+    },
+    {
+      "component": "article",
+      "metadata": {
+        "source": "github.readme"
+      },
+      "html": "\n<p>PHP API for RescueTime\nLicensed under the MIT license</p>\n<h2>Installation</h2>\n<p>Simply place the rescuetime.php somewhere in your website. Require the file and enable the love.</p>\n<h2>Usage</h2>\n<p><code>require &apos;api/rescuetime.php&apos;</code></p>\n<p>For visualisation include <a href=\"http://www.chartjs.org/\">chartjs</a> on your HTML page.\nAnd the javascript <code>js/rescuetime.js</code></p>\n<p>###Request\nTo do an API request, you need an <code>api-key</code>. Get one <a href=\"https://www.rescuetime.com/anapi/setup\">here</a>.\nCreate a new request object:\n        $rt_request = new RescueTimeRequest( $apikey );\nand use one or more of the following functions to manipulate the request:</p>\n<ul>\n<li><code>set_perspective</code>: Sets the perspective (rank, member, interval)</li>\n<li><code>set_resolution</code>: Sets the resolution (hour, week, day, month)</li>\n<li><code>set_startdate</code>: Sets the start date restriction</li>\n<li><code>set_enddate</code>: Sets the end date restriction </li>\n<li><code>restrict_user</code>: Restricts to a certain user name or e-mail</li>\n<li><code>restrict_group</code>: Restricts to a certain group name</li>\n<li><code>restrict_kind</code>: Restricts to a certain kind</li>\n<li><code>restrict_project</code>: Restricts to a certain project</li>\n<li><code>restrict_thing</code>: Restricts to a certain taxonomy</li>\n<li><code>restrict_thingy</code>: Restricts to a certain sub-taxonomy\nThe function calls are chainable, so you can:<pre>  $rt_request-&gt;set_perspective<span class=\"hljs-function\"><span class=\"hljs-params\">( <span class=\"hljs-string\">&apos;interval&apos;</span> )</span>-&gt;</span>set_resolution<span class=\"hljs-function\"><span class=\"hljs-params\">( <span class=\"hljs-string\">&apos;hour&apos;</span> )</span>-&gt;</span>restrict_user( <span class=\"hljs-string\">&apos;derk-jan@karrenbeld.info&apos;</span> );</pre>When you are ready call the execute command:<pre>  $rt_result = $rt_request-&gt;<span class=\"hljs-built_in\">execute</span>()<span class=\"hljs-comment\">;</span></pre>The request object is re-usable.</li>\n</ul>\n<p>###Result\nYou can manipulate the result, as long as the request was valid:\n        $rt_result-&gt;is_error(); //checks if the result has data\nThe data returned is tabular and the headers are provided seperately from the rows. Access those:</p>\n<ul>\n<li><code>get_rows</code>: Gets the raw row data</li>\n<li><code>get_row_headers</code>: Gets the row headers</li>\n</ul>\n<p>You can <code>GROUP BY</code> by issuing one of the <code>get_by</code> commands. Does not manipulate the data:</p>\n<ul>\n<li><code>get_rows_by_activity</code>: Group per activity</li>\n<li><code>get_rows_by_category</code>: Group per category</li>\n<li><code>get_rows_by_productivity</code>: Group per productivity value</li>\n<li><code>get_rows_by_person</code>: Group per person (only valid with perspective member)</li>\n<li><code>get_rows_by_date</code>: Group per date (only valid with perspective interval)</li>\n</ul>\n<p>You can <code>WHERE</code> data by issuing one of the <code>get_with</code> commands. Simply provide one value or an array of valid values. Does not manipulate the data:</p>\n<ul>\n<li><code>get_rows_with_rank</code>: Gets a row with a rank (only valid with perspective rank)</li>\n<li><code>get_rows_with_activity</code>: Gets rows with that activity</li>\n<li><code>get_rows_with_category</code>: Gets rows with that category</li>\n<li><code>get_rows_with_productivity</code>: Gets rows with that productivity</li>\n<li><code>get_rows_with_person</code>: Gets rows with that person (only valid with perspective member)</li>\n<li><code>get_rows_between_time</code>: Gets rows between min and max time spent</li>\n</ul>\n<p>You can filter data just like <code>WHERE</code> issuing one of the <code>filter</code> commands. Same arguments as the <code>get_with</code> are valid. <strong>Note:</strong> you don&apos;t get a subsection of rows back. Instead a new <code>RescueTimeResult</code> object is created with the subsection of data:</p>\n<ul>\n<li><code>filter_time</code>: Filters the data on rows between min and max time spent</li>\n<li><code>filter_min_time</code>: Filters the data on rows at least time spent</li>\n<li><code>filter_max_time</code>: Filters the data on rows at most time spent</li>\n<li><code>filter_activity</code>: Filters the data on rows with that activity</li>\n<li><code>filter_category</code>: Filters the data on rows with that category</li>\n<li><code>filter_productivity</code>: Filters the data on rows with that productivity</li>\n<li><code>filter_unproductive</code>: Filters data to only unproductive rows</li>\n<li><code>filter_productive</code>: Filters data to only productive rows</li>\n<li><code>filter_person</code> : Filters rows for that person (only valid with perspective member)</li>\n</ul>\n"
+    },
+    {
+      "component": "footer",
+      "links": [
+        {
+          "href": "https://github.com/SleeplessByte/php-rescuetime",
+          "text": "GitHub"
+        },
+        {
+          "href": "https://github.com/SleeplessByte",
+          "text": "SleeplessByte"
+        }
+      ]
+    }
+  ]
+}
